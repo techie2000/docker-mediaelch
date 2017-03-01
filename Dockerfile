@@ -1,6 +1,6 @@
 FROM base/archlinux:latest
 
-RUN pacman -Sqyu --noconfirm --needed openssh sed && \
+RUN pacman -Sqyu --noconfirm --needed openssh systemd-sysvcompat sed && \
     systemctl enable sshd
 
 # configure ssh
