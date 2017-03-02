@@ -1,36 +1,29 @@
-FROM base/archlinux:latest
+FROM       ubuntu:16.04
 
-RUN pacman -Sqyu --noconfirm --needed openssh systemd-sysvcompat sed && \
-    systemctl enable sshd
+# Add MediaElch Repo
+RUN echo deb http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >> /etc/apt/sources.list.d/mediaelch.list
+RUN echo deb-src http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >> /etc/apt/sources.list.d/mediaelch.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 00DAEE81 && apt-get update
 
-# configure ssh
-RUN sed -i \
-        -e 's/^#*\(PermitRootLogin\) .*/\1 yes/' \
-        -e 's/^#*\(PasswordAuthentication\) .*/\1 yes/' \
-        -e 's/^#*\(PermitEmptyPasswords\) .*/\1 yes/' \
-        -e 's/^#*\(UsePAM\) .*/\1 no/' \
-        /etc/ssh/sshd_config
+# Install MediaElch
+RUN apt-get install -y mediaelch
 
-# install base packages
-RUN pacman -Sqyu --noconfirm --needed openssh  && \
-    systemctl enable sshd
-RUN pacman -Sqyu --needed git sudo wget grep base-devel gzip --noconfirm
-RUN rm /var/cache/pacman/pkg/*
+# Install SSH server
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
 
+# Configuration SSH
+RUN echo 'root:root' |chpasswd
 
-# add user, because packaging is not allowed as root
-RUN useradd makepkg ; echo "makepkg ALL = (root) NOPASSWD:ALL" >> /etc/sudoers.d/makepkg
+RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
-# create temp directory and run git checkouts
-RUN mkdir /tmp/install
-WORKDIR /tmp/install
-# install MediaElch
-RUN git clone https://aur.archlinux.org/mediaelch.git 
-RUN chown makepkg -R /tmp/install
-WORKDIR /tmp/install/mediaelch/
-RUN su -c "makepkg -si --noconfirm" -s /bin/bash makepkg
-# Clean tmp
-RUN rm -dR /tmp/install
+# Create user
+RUN adduser --disabled-password --gecos ""  mediaelch
 
 EXPOSE 22
-CMD ["/usr/bin/init"]
+
+COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+CMD    ["/usr/sbin/sshd", "-D"]
