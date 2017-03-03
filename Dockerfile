@@ -16,9 +16,7 @@ RUN mkdir /var/run/sshd
 RUN adduser --disabled-password --gecos ""  mediaelch
 
 # Configuration SSH
-RUN echo 'root:root' |chpasswd
-
-RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin no/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
 RUN mkdir -p /home/mediaelch/.ssh && chown mediaelch:mediaelch /home/mediaelch/.ssh && chmod 700 /home/mediaelch/.ssh
