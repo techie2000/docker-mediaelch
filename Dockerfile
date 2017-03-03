@@ -12,19 +12,22 @@ RUN apt-get install -y mediaelch
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 
+# Create user
+RUN adduser --disabled-password --gecos ""  mediaelch
+
 # Configuration SSH
 RUN echo 'root:root' |chpasswd
 
 RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
-# Create user
-RUN adduser --disabled-password --gecos ""  mediaelch
+RUN mkdir -p /home/mediaelch/.ssh && chown mediaelch:mediaelch /home/mediaelch/.ssh && chmod 700 /home/mediaelch/.ssh
 
-EXPOSE 22
-
+# Entrypoint
 COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
+EXPOSE 22
+VOLUME /movies /shows /home/mediaelch/.config/kvibes /home/mediaelch/.ssh/authorized_keys
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD    ["/usr/sbin/sshd", "-D"]
