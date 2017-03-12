@@ -30,10 +30,10 @@ RUN update-locale LANG=en_US.UTF-8
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
-RUN echo 'LC_ALL=en_US.UTF-8' >> /home/mediaelch/.profile
+RUN echo 'export LC_ALL=en_US.UTF-8' >> /home/mediaelch/.profile
 RUN echo 'export LANG=en_US.UTF-8' >> /home/mediaelch/.profile
 RUN echo 'export LANGUAGE=en_US.UTF-8' >> /home/mediaelch/.profile
-RUN echo 'LC_ALL=en_US.UTF-8' >> /home/mediaelch/.bashrc
+RUN echo 'export LC_ALL=en_US.UTF-8' >> /home/mediaelch/.bashrc
 RUN echo 'export LANG=en_US.UTF-8' >> /home/mediaelch/.bashrc
 RUN echo 'export LANGUAGE=en_US.UTF-8' >> /home/mediaelch/.bashrc
 
