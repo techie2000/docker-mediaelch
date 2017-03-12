@@ -6,7 +6,7 @@ RUN echo deb-src http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >>
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 00DAEE81 && apt-get update
 
 # Install MediaElch
-RUN apt-get install -y mediaelch
+RUN apt-get install -y mediaelch qtdeclarative5-models-plugin qml-module-qtquick-controls libqt5multimedia5-plugins
 
 # Install SSH server
 RUN apt-get install -y openssh-server
@@ -26,9 +26,16 @@ COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN locale-gen en_US.UTF-8  
+RUN update-locale LANG=en_US.UTF-8
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
+RUN echo 'LC_ALL=en_US.UTF-8' >> /home/mediaelch/.profile
+RUN echo 'export LANG=en_US.UTF-8' >> /home/mediaelch/.profile
+RUN echo 'export LANGUAGE=en_US.UTF-8' >> /home/mediaelch/.profile
+RUN echo 'LC_ALL=en_US.UTF-8' >> /home/mediaelch/.bashrc
+RUN echo 'export LANG=en_US.UTF-8' >> /home/mediaelch/.bashrc
+RUN echo 'export LANGUAGE=en_US.UTF-8' >> /home/mediaelch/.bashrc
 
 EXPOSE 22
 VOLUME /movies /shows /home/mediaelch/.config/kvibes /home/mediaelch/.ssh/authorized_keys
