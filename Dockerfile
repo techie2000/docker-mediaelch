@@ -25,6 +25,7 @@ RUN mkdir -p /home/mediaelch/.ssh && chown mediaelch:mediaelch /home/mediaelch/.
 COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+RUN apt-get install -y locales
 RUN locale-gen en_US.UTF-8  
 RUN update-locale LANG=en_US.UTF-8
 ENV LANG en_US.UTF-8  
