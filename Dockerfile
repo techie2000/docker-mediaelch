@@ -1,4 +1,4 @@
-FROM       jlesage/ubuntu-16.04-v2
+FROM       jlesage/baseimage-gui:ubuntu-16.04-v2
 
 # Add MediaElch Repo
 RUN echo deb http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >> /etc/apt/sources.list.d/mediaelch.list
