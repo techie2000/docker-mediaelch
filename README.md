@@ -2,22 +2,16 @@
 
 Container for MediaElch (http://www.kvibes.de/mediaelch/)
 
-Run MediaElch over SSH with X11 Forwarding !
+Run MediaElch with HTTP GUI (port 5800) or RDM (port 5900).
 
 Exported Volumes 
 
 ## Usage
-Containerizd MediaElch and allow remote accesss through SSH with X11 Forwarding.
-
-SSH user : mediaelch
-SSH password : *disabled*, use Key authentication (see below to provide authorized_keys)
-
-Run MediaElch : MediaElch
+Containerizd MediaElch and allow remote accesss through HTTP GUI. Connect to `http://<docker_ip>:5800` to access mediaelch GUI
 
 ## Parameters
-* `-p 22` - the port(s)
+* `-p 5800:5800 -p 5900:5900` - the port(s)
 * `-v /home/mediaelch/.config/kvibes` - where MediaElch should store config files.
-* `-v /home/mediaelch/.ssh/authorized_keys` - where SSH Authorized Keys are stored
 * `-v /movies` - your movies folder
 * `-v /shows` - your tv-shows folder
 * `-e PGID` for GroupID - see below for explanation
