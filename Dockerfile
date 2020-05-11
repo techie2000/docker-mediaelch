@@ -23,7 +23,8 @@ RUN apt-get install -y ffmpeg
 RUN apt-get install -y qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
 
 # Get and Build
-RUN git clone https://github.com/Komet/MediaElch.git && cd MediaElch
+RUN git clone https://github.com/Komet/MediaElch.git
+RUN cd MediaElch
 RUN git submodule update --init
 RUN mkdir build && cd $_
 RUN qmake ..
