@@ -1,4 +1,4 @@
-FROM       jlesage/baseimage-gui:ubuntu-16.04-v3
+FROM jlesage/baseimage-gui:ubuntu-16.04-v3
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -6,32 +6,38 @@ RUN apt-get upgrade -y
 # Required for `add-apt-repository`
 RUN apt-get install -y software-properties-common
 
-# MediaElch requires a more modern GCC:
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+# Add the repository to your system
+RUN add-apt-repository ppa:mediaelch/mediaelch-stable
 RUN apt-get update -y
-RUN apt-get install -y g++-8 gcc-8
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+# Install MediaElch
+RUN apt-get install -y mediaelch
+
+# MediaElch requires a more modern GCC:
+#RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+#RUN apt-get update -y
+#RUN apt-get install -y g++-8 gcc-8
+#RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
+#RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 # Build tools and other libraries
-RUN apt-get install -y build-essential git libcurl4-openssl-dev
-RUN apt-get install -y libmediainfo-dev
+#RUN apt-get install -y build-essential git libcurl4-openssl-dev
+#RUN apt-get install -y libmediainfo-dev
 # ffmpeg is required at runtime to create random screenshots
 RUN apt-get install -y ffmpeg
 
 # Qt (alternative: download and install Qt from its official website)
-RUN apt-get install -y qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
+#RUN apt-get install -y qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
 
 # Get and Build
-RUN git clone https://github.com/Komet/MediaElch.git
-RUN cd MediaElch
+#RUN git clone https://github.com/Komet/MediaElch.git
+#RUN cd MediaElch
 #RUN git submodule update --init
-RUN mkdir build && cd $_
-RUN qmake ..
-RUN make -j4
+#RUN mkdir build && cd $_
+#RUN qmake ..
+#RUN make -j4
 
 # Install
-RUN make install
+#RUN make install
 
 # Install SSH server
 #RUN apt-get install -y openssh-server
