@@ -25,7 +25,7 @@ RUN apt-get install -y qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclar
 # Get and Build
 RUN git clone https://github.com/Komet/MediaElch.git
 RUN cd MediaElch
-RUN git submodule update --init
+#RUN git submodule update --init
 RUN mkdir build && cd $_
 RUN qmake ..
 RUN make -j4
