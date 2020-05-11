@@ -1,12 +1,33 @@
 FROM       jlesage/baseimage-gui:ubuntu-16.04-v3
 
-# Add MediaElch Repo
-RUN echo deb http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >> /etc/apt/sources.list.d/mediaelch.list
-RUN echo deb-src http://ppa.launchpad.net/kvibes/mediaelch/ubuntu xenial main >> /etc/apt/sources.list.d/mediaelch.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 00DAEE81 && apt-get update
+# Required for `add-apt-repository`
+RUN apt install -y software-properties-common
 
-# Install MediaElch
-RUN apt-get install -y mediaelch qtdeclarative5-models-plugin qml-module-qtquick-controls libqt5multimedia5-plugins
+# MediaElch requires a more modern GCC:
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt update -y
+RUN apt install -y g++-8 gcc-8
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+
+# Build tools and other libraries
+RUN apt install -y build-essential git libcurl4-openssl-dev
+RUN apt install -y libmediainfo-dev
+# ffmpeg is required at runtime to create random screenshots
+RUN apt install -y ffmpeg
+
+# Qt (alternative: download and install Qt from its official website)
+RUN apt install qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
+
+# Get and Build
+RUN git clone https://github.com/Komet/MediaElch.git && cd MediaElch
+RUN git submodule update --init
+RUN mkdir build && cd $_
+RUN qmake ..
+RUN make -j4
+
+# Install
+RUN make install
 
 # Install SSH server
 #RUN apt-get install -y openssh-server
