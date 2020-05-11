@@ -1,23 +1,23 @@
 FROM       jlesage/baseimage-gui:ubuntu-16.04-v3
 
 # Required for `add-apt-repository`
-RUN apt install -y software-properties-common
+RUN apt-get install -y software-properties-common
 
 # MediaElch requires a more modern GCC:
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
-RUN apt update -y
-RUN apt install -y g++-8 gcc-8
+RUN apt-get update -y
+RUN apt-get install -y g++-8 gcc-8
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
 RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 # Build tools and other libraries
-RUN apt install -y build-essential git libcurl4-openssl-dev
-RUN apt install -y libmediainfo-dev
+RUN apt-get install -y build-essential git libcurl4-openssl-dev
+RUN apt-get install -y libmediainfo-dev
 # ffmpeg is required at runtime to create random screenshots
-RUN apt install -y ffmpeg
+RUN apt-get install -y ffmpeg
 
 # Qt (alternative: download and install Qt from its official website)
-RUN apt install qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
+RUN apt-get install -y qt5-default qtmultimedia5-dev qtdeclarative5-dev qtdeclarative5-controls-plugin qtdeclarative5-models-plugin
 
 # Get and Build
 RUN git clone https://github.com/Komet/MediaElch.git && cd MediaElch
