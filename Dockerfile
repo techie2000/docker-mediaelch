@@ -1,5 +1,8 @@
 FROM       jlesage/baseimage-gui:ubuntu-16.04-v3
 
+RUN apt-get update -y
+RUN apt-get upgrade -y
+
 # Required for `add-apt-repository`
 RUN apt-get install -y software-properties-common
 
