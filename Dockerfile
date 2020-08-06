@@ -73,6 +73,8 @@ RUN echo 'export LANGUAGE=en_US.UTF-8' >> /home/mediaelch/.bashrc
 #VOLUME /movies /shows /home/mediaelch/.config/kvibes /home/mediaelch/.ssh/authorized_keys
 # Define mountable directories.
 ENV APP_NAME="MediaElch"
+ENV DISPLAY_WIDTH="1600"
+ENV DISPLAY_HEIGHT="900"
 VOLUME ["/movies"]
 VOLUME ["/home/mediaelch/.config/kvibes"]
 
