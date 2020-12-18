@@ -1,4 +1,4 @@
-FROM jlesage/baseimage-gui:ubuntu-16.04-v3
+FROM jlesage/baseimage-gui:ubuntu-18.04-v3
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
